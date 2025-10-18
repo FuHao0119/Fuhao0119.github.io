@@ -292,7 +292,10 @@
     
     
       <div class="min-h-[148px]"></div>
-<div class="fixed inset-x-0 bg-neutral dark:bg-neutral-800 z-100">
+<div class="fixed inset-x-0 z-100">
+  <div
+    id="menu-blur"
+    class="absolute opacity-0 inset-x-0 top-0 h-full single_hero_background nozoom backdrop-blur-2xl shadow-2xl"></div>
   <div class="relative m-auto leading-7 max-w-7xl px-6 sm:px-14 md:px-24 lg:px-32">
     
 
@@ -336,6 +339,24 @@
   
     <p class="text-base font-medium">
       Blog
+    </p>
+  
+</a>
+
+
+
+      
+        
+  <a
+  href="/authors/"
+  
+  class="flex items-center hover:text-primary-600 dark:hover:text-primary-400"
+  aria-label="About"
+  title="">
+  
+  
+    <p class="text-base font-medium">
+      About
     </p>
   
 </a>
@@ -460,6 +481,26 @@
 
 
             
+              
+  <li class="mt-1">
+  <a
+    href="/authors/"
+    
+    class="flex items-center hover:text-primary-600 dark:hover:text-primary-400"
+    aria-label="About"
+    title="">
+    
+    
+      <p class="text-bg font-bg">
+        About
+      </p>
+    
+  </a>
+</li>
+
+
+
+            
 
           </ul>
           
@@ -487,6 +528,13 @@
   </div>
 </div>
 
+
+<script
+  type="text/javascript"
+  src="/js/background-blur.min.00a57c73ea12f2cab2980c3c3d649e89f6d82f190f74bbe2b67f2f5e39ab7d032ece47086400ca05396758aace13299da49aca43ea643d2625e62c506267a169.js"
+  integrity="sha512-AKV8c&#43;oS8sqymAw8PWSeifbYLxkPdLvitn8vXjmrfQMuzkcIZADKBTlnWKrOEymdpJrKQ&#43;pkPSYl5ixQYmehaQ=="
+  data-blur-id="menu-blur"></script>
+
     
     <div class="relative flex flex-col grow">
       <main id="main-content" class="grow">
@@ -507,30 +555,6 @@
 
 
 
-
-  
-  
-    
-    
-  
-
-
-
-
-
-
-  
-    
-    
-  
-
-
-
-
-
-
-
-
   
   
     
@@ -547,6 +571,7 @@
   
   
     
+    
   
 
 
@@ -555,66 +580,45 @@
   
     
     
-      
-      
-    
   
 
 
 
 
 
-
-  <div class="overflow-hidden rounded-md h-36 md:h-56 lg:h-72 nozoom">
+  <div class="fixed inset-x-0 top-0 h-[800px] single_hero_background nozoom">
+    
+    
+    
     <img
-      src="/img/paint_hu_cc3c811a1e13ac80.png"
+      id="background-image"
+      src="/img/background.svg"
       alt="Posts"
       loading="eager"
       decoding="async"
       fetchpriority="high"
-      class="w-full h-full nozoom object-cover"
+      class="absolute inset-0 w-full h-full object-cover"
       >
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-neutral dark:from-neutral-800 to-transparent mix-blend-normal"></div>
+    <div
+      class="absolute inset-0 opacity-60 bg-gradient-to-t from-neutral dark:from-neutral-800 to-neutral-100 dark:to-neutral-800 mix-blend-normal"></div>
   </div>
 
-
-
-<div class="single_hero_background nozoom fixed inset-x-0 top-0 h-[800px]">
   
+    <div
+      id="background-blur"
+      class="fixed opacity-0 inset-x-0 top-0 h-full single_hero_background nozoom backdrop-blur-2xl"></div>
     
     
-    
-    <img
-      id="background-image-main"
-      src="/img/background.svg"
-      alt=""
-      role="presentation"
-      loading="eager"
-      decoding="async"
-      fetchpriority="high"
-      class="absolute inset-0 h-full w-full object-cover"
-      >
+    <script
+      type="text/javascript"
+      src="/js/background-blur.min.00a57c73ea12f2cab2980c3c3d649e89f6d82f190f74bbe2b67f2f5e39ab7d032ece47086400ca05396758aace13299da49aca43ea643d2625e62c506267a169.js"
+      integrity="sha512-AKV8c&#43;oS8sqymAw8PWSeifbYLxkPdLvitn8vXjmrfQMuzkcIZADKBTlnWKrOEymdpJrKQ&#43;pkPSYl5ixQYmehaQ=="
+      data-blur-id="background-blur"
+      data-image-id="background-image"
+      data-image-url="/img/background.svg"></script>
   
-  <div
-    class="from-neutral absolute inset-0 bg-gradient-to-t to-transparent mix-blend-normal dark:from-neutral-800"></div>
-  <div
-    class="from-neutral to-neutral absolute inset-0 bg-gradient-to-t opacity-30 mix-blend-normal dark:from-neutral-800 dark:to-neutral-800 dark:opacity-60"></div>
-</div>
-
-
-  <div
-    id="background-blur"
-    class="fixed opacity-0 inset-x-0 top-0 h-full single_hero_background nozoom backdrop-blur-2xl"></div>
-  
-  
-  <script
-    type="text/javascript"
-    src="/js/background-blur.min.00a57c73ea12f2cab2980c3c3d649e89f6d82f190f74bbe2b67f2f5e39ab7d032ece47086400ca05396758aace13299da49aca43ea643d2625e62c506267a169.js"
-    integrity="sha512-AKV8c&#43;oS8sqymAw8PWSeifbYLxkPdLvitn8vXjmrfQMuzkcIZADKBTlnWKrOEymdpJrKQ&#43;pkPSYl5ixQYmehaQ=="
-    data-blur-id="background-blur"
-    data-image-id="background-image-main"
-    data-image-url="/img/background.svg"></script>
-
-
     
   
 
@@ -729,7 +733,7 @@
   
     <div class="flex-none relative overflow-hidden thumbnail_card">
       <img
-        src="/img/paint_hu_c90f66d6b902c599.png"
+        src="/img/bg1_hu_29a9b6220e001414.png"
         alt="用遗传算法解决背包问题：一次成功的实践"
         loading="lazy"
         decoding="async"
@@ -741,7 +745,7 @@
     <header>
       <a
         
-          href="/posts/my-second-post/"
+          href="/posts/20251018/"
         
         class="not-prose before:absolute before:inset-0 decoration-primary-500 dark:text-neutral text-xl font-bold text-neutral-800 hover:underline hover:underline-offset-2">
         <h2>
@@ -771,9 +775,13 @@
   
 
   
+    
+  
 
   
 
+  
+    
   
 
   
@@ -794,7 +802,7 @@
   <div class="flex flex-row flex-wrap items-center">
     
     
-      <span title="预计阅读">3 分钟</span>
+      <time datetime="2025-10-18T14:31:19&#43;08:00">18 Oct 2025</time><span class="px-2 text-primary-500">&middot;</span><span>1134 字</span><span class="px-2 text-primary-500">&middot;</span><span title="预计阅读">3 分钟</span>
     
 
     
@@ -802,38 +810,8 @@
   </div>
 
   
-    <div class="flex flex-row flex-wrap items-center">
-      
-        
-          
-        
-      
-        
-      
-        
-      
-        
-      
-    </div>
-  
 
   
-  
-    <div class="flex flex-row flex-wrap items-center">
-      
-        
-      
-        
-          
-        
-      
-        
-      
-        
-          
-        
-      
-    </div>
   
 
   
@@ -897,16 +875,6 @@
                 title="Tags">
                 
                 标签
-              </a>
-            </li>
-          
-            <li class=" flex mb-1 text-end sm:mb-0 sm:me-7 sm:last:me-0 ">
-              <a
-                class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2 flex items-center"
-                href="/authors/"
-                title="Authors">
-                
-                作者
               </a>
             </li>
           
