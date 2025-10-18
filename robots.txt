@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://Fuhao.github.io/sitemap.xml
