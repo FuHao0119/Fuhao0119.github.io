@@ -7,7 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <copyright>©  2025 All Rights Reserved.</copyright>
-    <lastBuildDate>Sat, 18 Oct 2025 22:38:05 +0800</lastBuildDate><atom:link href="https://Fuhao0119.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 19 Oct 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://Fuhao0119.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>关于我</title>
+      <link>https://Fuhao0119.github.io/about/</link>
+      <pubDate>Sun, 19 Oct 2025 00:00:00 +0000</pubDate>
+      
+      <guid>https://Fuhao0119.github.io/about/</guid>
+      <description></description>
+      
+    </item>
     
     <item>
       <title>用遗传算法解决背包问题：一次成功的实践</title>
