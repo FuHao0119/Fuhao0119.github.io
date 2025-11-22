@@ -2,29 +2,39 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on FUのBlog</title>
-    <link>https://Fuhao0119.github.io/posts/</link>
+    <link>http://localhost:1313/posts/</link>
     <description>Recent content in Posts on FUのBlog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <copyright>©  2025 All Rights Reserved.</copyright>
-    <lastBuildDate>Sat, 08 Nov 2025 14:31:19 +0800</lastBuildDate><atom:link href="https://Fuhao0119.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 22 Nov 2025 14:31:19 +0800</lastBuildDate><atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>大语言模型（LLM）与知识图谱（KG）深度协同研究报告</title>
+      <link>http://localhost:1313/posts/20251122/</link>
+      <pubDate>Sat, 22 Nov 2025 14:31:19 +0800</pubDate>
+      
+      <guid>http://localhost:1313/posts/20251122/</guid>
+      <description></description>
+      
+    </item>
     
     <item>
       <title>迷宫路径搜索算法比较与分析</title>
-      <link>https://Fuhao0119.github.io/posts/20251108/</link>
+      <link>http://localhost:1313/posts/20251108/</link>
       <pubDate>Sat, 08 Nov 2025 14:31:19 +0800</pubDate>
       
-      <guid>https://Fuhao0119.github.io/posts/20251108/</guid>
+      <guid>http://localhost:1313/posts/20251108/</guid>
       <description></description>
       
     </item>
     
     <item>
       <title>用遗传算法解决背包问题：一次成功的实践</title>
-      <link>https://Fuhao0119.github.io/posts/20251018/</link>
+      <link>http://localhost:1313/posts/20251018/</link>
       <pubDate>Sat, 18 Oct 2025 14:31:19 +0800</pubDate>
       
-      <guid>https://Fuhao0119.github.io/posts/20251018/</guid>
+      <guid>http://localhost:1313/posts/20251018/</guid>
       <description></description>
       
     </item>

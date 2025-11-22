@@ -1,0 +1,67 @@
+/* 文件位置: static/css/custom_style.css
+   作用: 强制增加文章宽度 + 强制白天模式
+*/
+
+/* ============================================
+   1. 调整文章宽度 (Increase Width)
+   ============================================ */
+
+/* 针对常见 Hugo 主题的内容容器类名进行覆盖
+   (PaperMod, Stack, Ananke 等常用类名)
+*/
+.container,
+.main,
+.page-main,
+.content,
+.post-content,
+article.post {
+    /* 将最大宽度增加到 1200px (原通常为 700-800px) */
+    max-width: 1200px !important;
+
+    /* 确保在小屏幕上仍然保留一点边距 */
+    width: 95% !important;
+
+    /* 居中显示 */
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* 针对某些使用 prose (Tailwind) 的主题，取消其宽度限制 */
+.prose {
+    max-width: none !important;
+}
+
+
+/* ============================================
+   2. 强制白天模式 (Force Light Mode)
+   ============================================ */
+
+/* 强制 HTML 和 Body 背景为白色，文字为深色 */
+html, body {
+    background-color: #ffffff !important;
+    color: #1a1a1a !important;
+}
+
+/* 覆盖文章区域的背景（有些主题文章卡片是独立的颜色） */
+article, .post, .main {
+    background-color: #ffffff !important;
+    color: #1a1a1a !important;
+}
+
+/* 如果主题有深色模式的类 (如 .dark)，强制覆盖其样式 */
+html.dark body, body.dark {
+    background-color: #ffffff !important;
+    color: #1a1a1a !important;
+}
+
+/* 强制将深色文字变回黑色 (防止在深色模式下文字变白导致看不见) */
+p, h1, h2, h3, h4, h5, h6, li, span, div {
+    color: inherit; /* 继承 body 的颜色 */
+}
+
+/* 针对代码块，保留其原有的深色背景，以免代码高亮失效，
+   但也确保边框清晰 */
+pre, code {
+    /* 这里的颜色可以根据喜好调整，通常代码块还是深色看着舒服 */
+    /* background-color: #f5f5f5 !important; 如果想要浅色代码块开启此行 */
+}
