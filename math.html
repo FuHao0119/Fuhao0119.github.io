@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>考研数学全家桶 V3.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        canvas { cursor: crosshair; touch-action: none; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* 增加公式显示的行高，避免拥挤 */
+        .katex-display { margin: 0.5em 0; }
+    </style>
+</head>
+<body class="bg-slate-100 h-screen flex overflow-hidden">
+
+    <aside class="w-64 bg-white shadow-xl flex flex-col z-20">
+        <div class="p-6 bg-blue-900 text-white">
+            <h1 class="font-bold text-xl tracking-wide">考研数学<br><span class="text-sm font-light text-blue-200">核心公式库 V3.0</span></h1>
+        </div>
+        <nav class="flex-1 overflow-y-auto p-4 space-y-1">
+            <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 px-2 pt-2">微积分基础</div>
+            <button onclick="selectCategory('limits')" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm hover:bg-blue-50 text-gray-700 font-medium transition border-l-4 border-transparent">常用极限 & 无穷小</button>
+            <button onclick="selectCategory('derivative')" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm hover:bg-blue-50 text-gray-700 font-medium transition border-l-4 border-transparent">基本导数公式</button>
+            
+            <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 px-2 pt-4">积分学</div>
+            <button onclick="selectCategory('integrals_basic')" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm hover:bg-blue-50 text-gray-700 font-medium transition border-l-4 border-transparent">不定积分基本表</button>
+            <button onclick="selectCategory('integrals_sub')" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm hover:bg-blue-50 text-gray-700 font-medium transition border-l-4 border-transparent">凑微分 (第一换元)</button>
+        </nav>
+        <div class="p-4 border-t text-xs text-gray-400 text-center bg-gray-50">
+            Based on your uploaded images
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-full relative">
+        
+        <header class="bg-white border-b px-8 py-4 flex justify-between items-center shadow-sm z-10">
+            <div>
+                <h2 id="current-category-title" class="text-2xl font-bold text-gray-800">请选择模块</h2>
+                <p id="current-desc" class="text-sm text-gray-500 mt-1">从左侧菜单开始你的复习</p>
+            </div>
+            
+            <div class="bg-gray-100 p-1 rounded-lg flex space-x-1">
+                <button onclick="switchMode('review')" id="tab-review" class="px-5 py-2 rounded-md text-sm font-bold transition-all shadow-sm bg-white text-blue-700 ring-1 ring-black/5">
+                    📖 背诵模式
+                </button>
+                <button onclick="switchMode('practice')" id="tab-practice" class="px-5 py-2 rounded-md text-sm font-bold transition-all text-gray-600 hover:text-gray-900">
+                    ✍️ 默写模式
+                </button>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-hidden relative bg-slate-50 p-4 sm:p-6">
+            
+            <div id="view-review" class="h-full overflow-y-auto pb-20 no-scrollbar hidden">
+                <div class="max-w-5xl mx-auto grid grid-cols-1 gap-4" id="review-list">
+                    </div>
+            </div>
+
+            <div id="view-practice" class="h-full flex flex-col hidden max-w-5xl mx-auto w-full">
+                <div class="flex justify-between items-end mb-3 px-1">
+                    <span class="text-sm text-gray-500 italic">Tips: 遮住答案，动手写一遍印象最深</span>
+                    <div class="flex space-x-2">
+                        <button onclick="clearCanvas()" class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 active:scale-95 transition">
+                            🗑️ 清空
+                        </button>
+                        <button onclick="nextQuestion()" class="px-4 py-2 bg-blue-600 rounded-lg text-sm font-medium text-white shadow hover:bg-blue-700 active:scale-95 transition">
+                            🎲 换一题
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex-1 bg-white rounded-2xl shadow-lg border border-gray-200 flex flex-col overflow-hidden">
+                    
+                    <div class="bg-slate-50 px-6 py-5 border-b border-gray-200 min-h-[80px] flex flex-col justify-center">
+                        <span class="text-xs font-bold text-blue-500 uppercase tracking-wide mb-1">Current Question</span>
+                        <div id="question-text" class="text-xl md:text-2xl font-serif text-gray-800"></div>
+                    </div>
+
+                    <div class="flex-1 relative bg-white cursor-crosshair touch-none" id="canvas-container">
+                        <canvas id="drawing-board" class="w-full h-full block"></canvas>
+                        <div class="absolute inset-0 pointer-events-none flex items-center justify-center opacity-[0.03]">
+                            <svg class="w-32 h-32 text-black" fill="currentColor" viewBox="0 0 24 24"><path d="M3 3h18v18H3V3zm2 2v14h14V5H5z"/></svg>
+                        </div>
+                    </div>
+
+                    <div class="p-5 border-t border-gray-100 bg-white z-10">
+                        <div id="answer-section" class="hidden mb-4 animate-fade-in">
+                            <div class="p-4 bg-green-50 rounded-xl border border-green-100 flex flex-col sm:flex-row items-center gap-4">
+                                <span class="bg-green-200 text-green-800 text-xs font-bold px-2 py-1 rounded">标准答案</span>
+                                <div id="katex-answer" class="text-xl text-gray-900 overflow-x-auto"></div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mt-4">
+                                <button onclick="recordResult(false)" class="py-3 rounded-lg border border-red-200 bg-red-50 text-red-700 font-bold hover:bg-red-100 transition">😖 没记住</button>
+                                <button onclick="recordResult(true)" class="py-3 rounded-lg bg-green-600 text-white font-bold hover:bg-green-700 shadow-lg shadow-green-200 transition">😎 记住了</button>
+                            </div>
+                        </div>
+
+                        <button id="show-answer-btn" onclick="showAnswer()" class="w-full py-4 bg-gray-900 hover:bg-black text-white rounded-xl font-bold text-lg shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5">
+                            👀 查看答案
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- 核心数据 (完全基于用户提供的图片录入) ---
+        const formulaData = {
+            'limits': [
+                { q: "重要极限：x->0, sin(x)/x", a: "\\lim_{x\\to 0} \\frac{\\sin x}{x} = 1" },
+                { q: "重要极限：x->0, (1+x)^(1/x)", a: "\\lim_{x\\to 0} (1+x)^{\\frac{1}{x}} = e" },
+                { q: "重要极限：x->∞, (1+1/x)^x", a: "\\lim_{x\\to \\infty} (1+\\frac{1}{x})^x = e" },
+                { q: "重要极限：x->0, (a^x - 1)/x", a: "\\lim_{x\\to 0} \\frac{a^x - 1}{x} = \\ln a" },
+                { q: "极限：n->∞, n开n次方", a: "\\lim_{n\\to \\infty} \\sqrt[n]{n} = 1" },
+                { q: "极限：n->∞, a开n次方 (a>0)", a: "\\lim_{n\\to \\infty} \\sqrt[n]{a} = 1" },
+                { q: "x->0 等价无穷小：sin x ~ ?", a: "x" },
+                { q: "x->0 等价无穷小：tan x ~ ?", a: "x" },
+                { q: "x->0 等价无穷小：arcsin x ~ ?", a: "x" },
+                { q: "x->0 等价无穷小：arctan x ~ ?", a: "x" },
+                { q: "x->0 等价无穷小：ln(1+x) ~ ?", a: "x" },
+                { q: "x->0 等价无穷小：e^x - 1 ~ ?", a: "x" },
+                { q: "x->0 等价无穷小：(1+x)^a - 1 ~ ?", a: "ax" },
+                { q: "x->0 等价无穷小：1 - cos x ~ ?", a: "\\frac{1}{2}x^2" },
+                { q: "x->0 等价无穷小：a^x - 1 ~ ?", a: "x \\ln a" },
+                { q: "高阶小量：x - sin x ~ ?", a: "\\frac{1}{6}x^3" },
+                { q: "高阶小量：tan x - x ~ ?", a: "\\frac{1}{3}x^3" },
+                { q: "高阶小量：x - ln(1+x) ~ ?", a: "\\frac{1}{2}x^2" },
+                { q: "高阶小量：arcsin x - x ~ ?", a: "\\frac{1}{6}x^3" },
+                { q: "高阶小量：x - arctan x ~ ?", a: "\\frac{1}{3}x^3" }
+            ],
+            'derivative': [
+                { q: "常数导数 C'", a: "0" },
+                { q: "幂函数 (x^u)'", a: "u x^{u-1}" },
+                { q: "指数函数 (a^x)'", a: "a^x \\ln a" },
+                { q: "指数函数 (e^x)'", a: "e^x" },
+                { q: "对数函数 (log_a x)'", a: "\\frac{1}{x \\ln a}" },
+                { q: "对数函数 (ln|x|)'", a: "\\frac{1}{x}" },
+                { q: "正弦 (sin x)'", a: "\\cos x" },
+                { q: "余弦 (cos x)'", a: "-\\sin x" },
+                { q: "正切 (tan x)'", a: "\\sec^2 x" },
+                { q: "余切 (cot x)'", a: "-\\csc^2 x" },
+                { q: "正割 (sec x)'", a: "\\sec x \\tan x" },
+                { q: "余割 (csc x)'", a: "-\\csc x \\cot x" },
+                { q: "反正弦 (arcsin x)'", a: "\\frac{1}{\\sqrt{1-x^2}}" },
+                { q: "反余弦 (arccos x)'", a: "-\\frac{1}{\\sqrt{1-x^2}}" },
+                { q: "反正切 (arctan x)'", a: "\\frac{1}{1+x^2}" },
+                { q: "反余切 (arccot x)'", a: "-\\frac{1}{1+x^2}" }
+            ],
+            'integrals_basic': [
+                { q: "∫ 0 dx", a: "C" },
+                { q: "∫ x^u dx (u≠-1)", a: "\\frac{1}{u+1}x^{u+1} + C" },
+                { q: "∫ 1/x dx", a: "\\ln|x| + C" },
+                { q: "∫ a^x dx", a: "\\frac{a^x}{\\ln a} + C" },
+                { q: "∫ e^x dx", a: "e^x + C" },
+                { q: "∫ sin x dx", a: "-\\cos x + C" },
+                { q: "∫ cos x dx", a: "\\sin x + C" },
+                { q: "∫ sec^2 x dx", a: "\\tan x + C" },
+                { q: "∫ csc^2 x dx", a: "-\\cot x + C" },
+                { q: "∫ sec x tan x dx", a: "\\sec x + C" },
+                { q: "∫ csc x cot x dx", a: "-\\csc x + C" },
+                { q: "∫ 1/√(1-x^2) dx", a: "\\arcsin x + C" },
+                { q: "∫ 1/(1+x^2) dx", a: "\\arctan x + C" },
+                { q: "∫ 1/√(a^2-x^2) dx", a: "\\arcsin \\frac{x}{a} + C" },
+                { q: "∫ 1/(a^2+x^2) dx", a: "\\frac{1}{a} \\arctan \\frac{x}{a} + C" },
+                { q: "∫ 1/(x^2-a^2) dx (平方差)", a: "\\frac{1}{2a} \\ln |\\frac{x-a}{x+a}| + C" },
+                { q: "∫ 1/√(x^2+a^2) dx", a: "\\ln(x+\\sqrt{x^2+a^2}) + C" },
+                { q: "∫ 1/√(x^2-a^2) dx", a: "\\ln|x+\\sqrt{x^2-a^2}| + C" },
+                { q: "∫ sec x dx", a: "\\ln|\\sec x + \\tan x| + C" },
+                { q: "∫ csc x dx", a: "-\\ln|\\csc x + \\cot x| + C" } 
+            ],
+            'integrals_sub': [
+                { q: "凑线性：∫ f(ax+b) dx -> d(?)", a: "\\frac{1}{a} \\int f(ax+b) d(ax+b)" },
+                { q: "凑幂：∫ x^m f(ax^(m+1)+b) dx -> d(?)", a: "\\frac{1}{(m+1)a} \\int f(ax^{m+1}+b) d(ax^{m+1}+b)" },
+                { q: "凑根号：∫ f(√x)/√x dx -> d(?)", a: "2 \\int f(\\sqrt{x}) d(\\sqrt{x})" },
+                { q: "凑指数：∫ f(e^x)e^x dx -> d(?)", a: "\\int f(e^x) d(e^x)" },
+                { q: "凑对数：∫ f(ln x) * 1/x dx -> d(?)", a: "\\int f(\\ln x) d(\\ln x)" },
+                { q: "凑正弦：∫ f(sin x) cos x dx -> d(?)", a: "\\int f(\\sin x) d(\\sin x)" },
+                { q: "凑余弦：∫ f(cos x) sin x dx -> d(?)", a: "-\\int f(\\cos x) d(\\cos x)" },
+                { q: "凑正切：∫ f(tan x) * sec^2 x dx -> d(?)", a: "\\int f(\\tan x) d(\\tan x)" },
+                { q: "凑反正弦：∫ f(arcsin x) / √(1-x^2) dx", a: "\\int f(\\arcsin x) d(\\arcsin x)" },
+                { q: "凑反正切：∫ f(arctan x) / (1+x^2) dx", a: "\\int f(\\arctan x) d(\\arctan x)" }
+            ]
+        };
+
+        let currentCategory = 'limits';
+        let currentMode = 'review';
+        let currentItem = null;
+
+        // 初始化
+        function init() {
+            selectCategory('integrals_basic'); // 默认展示最重要的积分表
+        }
+
+        function selectCategory(key) {
+            currentCategory = key;
+            const titles = {
+                'limits': '常用极限与等价无穷小', 
+                'derivative': '基本导数公式 (16个)', 
+                'integrals_basic': '不定积分基本公式 (20个)', 
+                'integrals_sub': '第一类换元法 (凑微分)'
+            };
+            const descs = {
+                'limits': '包含泰勒公式推导的高阶无穷小，做极限题必备。',
+                'derivative': '背熟这些，洛必达法则和泰勒展开才能算得快。',
+                'integrals_basic': '考研数学的九阳神功，特别是最后几个带根号和平方的。',
+                'integrals_sub': '看见导数凑微分，这是解决复杂积分的第一步。'
+            };
+
+            document.getElementById('current-category-title').innerText = titles[key];
+            document.getElementById('current-desc').innerText = descs[key];
+            
+            // 高亮左侧菜单
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-50', 'border-blue-500', 'text-blue-700');
+                btn.classList.add('border-transparent');
+            });
+            // 简单匹配
+            const allBtns = document.querySelectorAll('.nav-btn');
+            for(let btn of allBtns) {
+                if(btn.innerText.includes(titles[key].split(' ')[0]) || (key==='integrals_sub' && btn.innerText.includes('凑微分'))) {
+                    btn.classList.add('bg-blue-50', 'border-blue-500', 'text-blue-700');
+                    btn.classList.remove('border-transparent');
+                }
+            }
+
+            if (currentMode === 'review') renderReviewList();
+            else nextQuestion();
+        }
+
+        function switchMode(mode) {
+            currentMode = mode;
+            const reviewBtn = document.getElementById('tab-review');
+            const practiceBtn = document.getElementById('tab-practice');
+            const reviewView = document.getElementById('view-review');
+            const practiceView = document.getElementById('view-practice');
+
+            if (mode === 'review') {
+                toggleStyle(reviewBtn, true);
+                toggleStyle(practiceBtn, false);
+                reviewView.classList.remove('hidden');
+                practiceView.classList.add('hidden');
+                renderReviewList();
+            } else {
+                toggleStyle(practiceBtn, true);
+                toggleStyle(reviewBtn, false);
+                practiceView.classList.remove('hidden');
+                reviewView.classList.add('hidden');
+                if (!currentItem) nextQuestion();
+                setTimeout(resizeCanvas, 50);
+            }
+        }
+
+        function toggleStyle(btn, isActive) {
+            if (isActive) {
+                btn.classList.add('bg-white', 'text-blue-700', 'ring-1', 'ring-black/5', 'shadow-sm');
+                btn.classList.remove('text-gray-600', 'hover:text-gray-900');
+            } else {
+                btn.classList.remove('bg-white', 'text-blue-700', 'ring-1', 'ring-black/5', 'shadow-sm');
+                btn.classList.add('text-gray-600', 'hover:text-gray-900');
+            }
+        }
+
+        function renderReviewList() {
+            const listContainer = document.getElementById('review-list');
+            listContainer.innerHTML = '';
+            
+            const list = formulaData[currentCategory];
+            list.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition duration-200 flex flex-col md:flex-row md:items-center gap-4";
+                
+                const indexBadge = document.createElement('div');
+                indexBadge.className = "hidden md:flex flex-shrink-0 w-8 h-8 bg-blue-50 text-blue-600 rounded-full items-center justify-center font-bold text-sm";
+                indexBadge.innerText = index + 1;
+
+                const contentDiv = document.createElement('div');
+                contentDiv.className = "flex-1";
+                
+                const qDiv = document.createElement('div');
+                qDiv.className = "text-xs font-bold text-gray-400 uppercase tracking-wider mb-1";
+                qDiv.innerText = item.q;
+
+                const aDiv = document.createElement('div');
+                aDiv.className = "text-lg text-gray-800 overflow-x-auto";
+                
+                contentDiv.appendChild(qDiv);
+                contentDiv.appendChild(aDiv);
+                
+                card.appendChild(indexBadge);
+                card.appendChild(contentDiv);
+                listContainer.appendChild(card);
+
+                katex.render(item.a, aDiv, { throwOnError: false, displayMode: index > -1 }); // 开启 displayMode 让公式更舒展
+            });
+        }
+
+        function nextQuestion() {
+            const list = formulaData[currentCategory];
+            const randomIndex = Math.floor(Math.random() * list.length);
+            currentItem = list[randomIndex];
+
+            document.getElementById('question-text').innerText = currentItem.q;
+            document.getElementById('answer-section').classList.add('hidden');
+            document.getElementById('show-answer-btn').classList.remove('hidden');
+            document.getElementById('katex-answer').innerHTML = '';
+            
+            clearCanvas();
+        }
+
+        function showAnswer() {
+            const answerDiv = document.getElementById('katex-answer');
+            katex.render(currentItem.a, answerDiv, {
+                throwOnError: false,
+                displayMode: true
+            });
+            document.getElementById('answer-section').classList.remove('hidden');
+            document.getElementById('show-answer-btn').classList.add('hidden');
+        }
+
+        function recordResult(isCorrect) {
+            nextQuestion();
+        }
+
+        // 画板逻辑 (保持稳定)
+        const canvas = document.getElementById('drawing-board');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        let lastX = 0, lastY = 0;
+
+        function resizeCanvas() {
+            const container = document.getElementById('canvas-container');
+            if (container.clientWidth === 0) return;
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
+            ctx.lineWidth = 3; // 笔画更细一点
+            ctx.strokeStyle = '#0f172a'; // 墨色
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        function getPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return { x: clientX - rect.left, y: clientY - rect.top };
+        }
+
+        function startDraw(e) {
+            isDrawing = true;
+            const pos = getPos(e);
+            lastX = pos.x; lastY = pos.y;
+            if(e.type === 'touchstart') e.preventDefault();
+        }
+        function draw(e) {
+            if (!isDrawing) return;
+            const pos = getPos(e);
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+            lastX = pos.x; lastY = pos.y;
+            if(e.type === 'touchmove') e.preventDefault();
+        }
+        function stopDraw() { isDrawing = false; }
+        function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+
+        canvas.addEventListener('mousedown', startDraw);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDraw);
+        canvas.addEventListener('mouseout', stopDraw);
+        canvas.addEventListener('touchstart', startDraw, {passive: false});
+        canvas.addEventListener('touchmove', draw, {passive: false});
+        canvas.addEventListener('touchend', stopDraw);
+
+        init();
+    </script>
+</body>
+</html>
